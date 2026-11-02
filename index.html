@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kapil Deka | 3D Portfolio</title>
+<style>
+:root {
+  --site-primary: #7657f6;
+  --site-secondary: #14213a;
+  --site-background: #080b16;
+  --site-on-primary: #ffffff;
+  --site-on-secondary: #f5f7ff;
+  --site-on-background: #f5f6ff;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--site-background); color: var(--site-on-background); font-family: var(--site-font-body); overflow-x: hidden; }
+#app { min-height: 100vh; width: 100%; border-radius: 0; background-color: var(--site-background); position: relative; isolation: isolate; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+#app :is(h1,h2,h3,h4,p,a,b,strong,small,span,button,label,li,blockquote,.kicker,.eyebrow,.tag,.tool-chip,.float-card,.roadmap-number,.project-link,.meta,.info,.timeline-item) { text-shadow: 0 1px 0 rgba(255,255,255,.10), 0 2px 0 rgba(0,0,0,.18), 0 5px 12px rgba(0,0,0,.28); }
+#app :is(h1,h2,h3,.brand,.about-quote,.github-mark) { text-shadow: 0 1px 0 rgba(255,255,255,.16), 0 3px 0 rgba(0,0,0,.22), 0 7px 18px rgba(0,0,0,.34); }
+.noise { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: calc(.08 * var(--site-decoration-opacity)); background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E"); }
+.glow { position: absolute; width: 540px; height: 540px; border-radius: 50%; filter: blur(100px); opacity: calc(.2 * var(--site-decoration-opacity)); pointer-events: none; z-index: -1; background: var(--site-primary); top: 80px; right: -180px; }
+.scroll-progress { position: fixed; top: 0; left: 0; width: 0; height: 3px; z-index: 50; background: linear-gradient(90deg,#73d8e8,#9b88ff,#f49bd8); box-shadow: 0 0 14px rgba(155,136,255,.8); }
+.ambient-orbs { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; opacity: calc(.65 * var(--site-decoration-opacity)); }
+.ambient-orbs span { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #b6aaff; box-shadow: 0 0 18px 4px rgba(142,119,255,.55); animation: drift 15s ease-in-out infinite; }
+.ambient-orbs span:nth-child(1) { left: 12%; top: 25%; animation-delay: -2s; }
+.ambient-orbs span:nth-child(2) { left: 78%; top: 18%; animation-delay: -7s; background: #73d8e8; }
+.ambient-orbs span:nth-child(3) { left: 68%; top: 72%; animation-delay: -11s; }
+.ambient-orbs span:nth-child(4) { left: 25%; top: 82%; animation-delay: -5s; background: #73d8e8; }
+.ambient-orbs span:nth-child(5) { left: 91%; top: 48%; animation-delay: -9s; }
+header { position: fixed; top: 0; left: 0; right: 0; z-index: 20; padding: 18px clamp(20px, 6vw, 88px); display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(18px); background: rgba(8,11,22,.72); border-bottom: 1px solid rgba(255,255,255,.07); }
+.brand { font-weight: 850; letter-spacing: -.06em; font-size: 22px; }
+.brand span { color: #9b88ff; }
+nav { display: flex; gap: 30px; align-items: center; font-size: 13px; color: #c0c5d8; }
+nav a:hover { color: white; }
+.nav-cta, .primary-btn { background: var(--site-primary); color: white; padding: 12px 19px; border-radius: 999px; font-weight: 700; font-size: 13px; box-shadow: 0 8px 30px rgba(118,87,246,.25); transition: transform .25s, box-shadow .25s; }
+.nav-cta:hover, .primary-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(118,87,246,.4); }
+.menu { display: none; border: 1px solid #30364b; color: white; background: #151a2a; border-radius: 12px; padding: 9px 12px; }
+main { padding: 0 clamp(20px, 8vw, 120px); }
+.hero { min-height: 100vh; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 20px; padding-top: 100px; position: relative; }
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; color: #b5aaff; background: rgba(118,87,246,.12); border: 1px solid rgba(159,140,255,.25); border-radius: 999px; padding: 9px 14px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 800; }
+.pulse { width: 7px; height: 7px; border-radius: 50%; background: #75f0bd; box-shadow: 0 0 12px #75f0bd; }
+h1 { font-family: var(--site-font-heading); font-size: clamp(54px, 7.5vw, 105px); letter-spacing: -.075em; line-height: .94; margin: 25px 0 22px; }
+h1 .gradient { background: linear-gradient(100deg,#fff 5%,#b6aaff 52%,#73d8e8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero-copy { max-width: 550px; color: #aab1c7; line-height: 1.8; font-size: 16px; }
+.hero-actions { display: flex; gap: 13px; margin-top: 30px; align-items: center; flex-wrap: wrap; }
+.secondary-btn { border: 1px solid #373d55; border-radius: 999px; padding: 12px 19px; font-size: 13px; font-weight: 700; color: #e7e9f4; transition: .2s; }
+.secondary-btn:hover { background: #1b2034; border-color: #7f6aff; }
+.meta { display: flex; gap: 28px; margin-top: 45px; color: #8e96ad; font-size: 12px; }
+.meta strong { display: block; color: white; font-size: 20px; letter-spacing: -.04em; margin-bottom: 4px; }
+.scene { min-height: 520px; display: grid; place-items: center; perspective: 1000px; position: relative; }
+.orbit { width: min(440px, 80vw); aspect-ratio: 1; position: relative; transform-style: preserve-3d; animation: float 7s ease-in-out infinite; }
+.orbit:before, .orbit:after { content:""; position:absolute; inset: 9%; border: 1px solid rgba(177,163,255,.34); border-radius: 50%; transform: rotateX(68deg) rotateZ(-25deg); box-shadow: 0 0 35px rgba(118,87,246,.12); }
+.orbit:after { inset: 0; transform: rotateY(68deg) rotateZ(30deg); border-color: rgba(111,220,235,.24); }
+.core { position:absolute; inset: 23%; border-radius: 35%; background: radial-gradient(circle at 30% 25%,#c7c0ff 0,#8972ff 17%,#4b35b7 44%,#171a44 75%); box-shadow: inset -22px -22px 45px rgba(0,0,0,.45), inset 12px 12px 25px rgba(255,255,255,.22), 0 0 90px rgba(118,87,246,.55); transform: rotateX(18deg) rotateY(-28deg) rotateZ(35deg); animation: spin 18s linear infinite; }
+.core:before { content:""; position:absolute; inset: 12%; border-radius: 34%; border: 1px solid rgba(255,255,255,.3); transform: translateZ(35px); }
+.core:after { content:"K"; position:absolute; inset:0; display:grid; place-items:center; font-size: clamp(70px,10vw,130px); font-weight:900; letter-spacing:-.1em; color:rgba(255,255,255,.8); text-shadow:0 10px 40px rgba(0,0,0,.4); }
+.float-card { position:absolute; padding: 13px 16px; border:1px solid rgba(255,255,255,.13); border-radius:15px; background:rgba(17,22,42,.78); backdrop-filter:blur(15px); box-shadow:0 18px 55px rgba(0,0,0,.25); font-size:12px; color:#d9dcf0; }
+.float-card b { display:block; color:white; font-size:14px; margin-bottom:4px; }
+.card-a { top: 18%; left: -3%; transform: rotate(-7deg); }
+.card-b { bottom: 17%; right: -1%; transform: rotate(6deg); }
+.card-c { top: 48%; right: -9%; transform: rotate(4deg); }
+@keyframes float { 0%,100%{transform:translateY(0) rotateY(-8deg)} 50%{transform:translateY(-18px) rotateY(8deg)} }
+@keyframes spin { to { transform:rotateX(18deg) rotateY(332deg) rotateZ(395deg); } }
+@keyframes drift { 0%,100% { transform: translate3d(0,0,0) scale(.7); opacity:.35; } 50% { transform: translate3d(35px,-65px,0) scale(1.5); opacity:1; } }
+@keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+@keyframes orbitPulse { 0%,100% { box-shadow: 0 0 35px rgba(118,87,246,.12); } 50% { box-shadow: 0 0 65px rgba(118,87,246,.3); } }
+.orbit:before { animation: orbitPulse 4s ease-in-out infinite; }
+.hero-text > * { animation: heroEnter .85s both; }
+.hero-text .eyebrow { animation-delay: .1s; }
+.hero-text h1 { animation-delay: .22s; }
+.hero-text .hero-copy { animation-delay: .36s; }
+.hero-text .hero-actions { animation-delay: .5s; }
+.hero-text .meta { animation-delay: .64s; }
+@keyframes heroEnter { from { opacity:0; transform:translateY(24px); filter:blur(8px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+section { padding: 110px 0; }
+.section-top { display:flex; justify-content:space-between; align-items:end; gap:30px; margin-bottom:38px; }
+.kicker { color:#9c8cff; font-size:11px; letter-spacing:.18em; text-transform:uppercase; font-weight:800; }
+h2 { font-size: clamp(34px,5vw,58px); letter-spacing:-.065em; line-height:1; margin:12px 0 0; }
+.section-intro { color:#929ab2; max-width:380px; line-height:1.7; font-size:14px; }
+.about-grid { display:grid; grid-template-columns: .8fr 1.2fr; gap:22px; }
+.panel { border:1px solid rgba(255,255,255,.09); background:linear-gradient(145deg,rgba(25,31,55,.9),rgba(13,17,31,.85)); border-radius:25px; padding:30px; }
+.about-quote { font-size:clamp(25px,3vw,38px); line-height:1.2; letter-spacing:-.05em; margin:0 0 24px; }
+.about-quote span { color:#9d8cff; }
+.muted { color:#9ca4ba; line-height:1.8; font-size:14px; }
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; }
+.info { padding:15px; border-radius:14px; background:rgba(255,255,255,.04); }
+.info small { display:block; color:#818ba6; font-size:10px; text-transform:uppercase; letter-spacing:.12em; margin-bottom:7px; }
+.info b { font-size:13px; }
+.skills { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.skill { padding:22px; border:1px solid rgba(255,255,255,.09); background:#11172a; border-radius:18px; transition:.25s; }
+.skill:hover { transform:translateY(-6px); border-color:rgba(150,130,255,.5); background:#171d36; }
+.skill { position:relative; overflow:hidden; }
+.skill:after { content:""; position:absolute; inset:-60% auto -60% -45%; width:35%; transform:rotate(22deg); background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent); transition:left .7s ease; }
+.skill:hover:after { left:125%; }
+.skill { transform-style:preserve-3d; will-change:transform; }
+.skill .symbol { transform:translateZ(22px); transition:transform .3s; }
+.skill:hover .symbol { transform:translateZ(34px) rotate(-8deg); }
+.custom-cursor { position:fixed; left:0; top:0; width:18px; height:18px; border:1px solid rgba(183,170,255,.9); border-radius:50%; pointer-events:none; z-index:100; transform:translate(-50%,-50%); opacity:0; transition:width .2s,height .2s,opacity .2s,background .2s; box-shadow:0 0 18px rgba(155,136,255,.35); }
+.custom-cursor.active { opacity:1; }
+.custom-cursor.hovering { width:42px; height:42px; background:rgba(155,136,255,.12); }
+.skill .symbol { width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:rgba(118,87,246,.17);color:#b7aaff;font-weight:900;margin-bottom:18px; }
+.skill b { display:block; margin-bottom:7px; font-size:14px; }
+.skill p { margin:0;color:#8790a9;font-size:12px;line-height:1.6; }
+.project-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+.project { overflow:hidden; padding:0; }
+.project { transition:transform .45s cubic-bezier(.2,.8,.2,1), border-color .35s, box-shadow .35s; transform-style:preserve-3d; }
+.project:hover { transform:translateY(-9px) rotateX(2deg); border-color:rgba(155,136,255,.45); box-shadow:0 25px 65px rgba(0,0,0,.28); }
+.project-art { min-height:220px; display:grid; place-items:center; position:relative; overflow:hidden; background:radial-gradient(circle at 50% 50%,#45328e,#171a3b 60%,#101527); }
+.project-art.alt { background:radial-gradient(circle at 50% 50%,#1d6673,#15253a 60%,#101527); }
+.project-art.third { background:radial-gradient(circle at 50% 50%,#794c70,#291d3d 60%,#101527); }
+.window { width:70%; border:1px solid rgba(255,255,255,.25); background:rgba(8,12,26,.72); border-radius:12px; padding:12px; transform:perspective(700px) rotateY(-12deg) rotateX(5deg); box-shadow:0 25px 60px rgba(0,0,0,.35); }
+.project:hover .window { animation: windowFloat 2.8s ease-in-out infinite; }
+@keyframes windowFloat { 0%,100% { transform:perspective(700px) rotateY(-12deg) rotateX(5deg) translateY(0); } 50% { transform:perspective(700px) rotateY(8deg) rotateX(-2deg) translateY(-9px); } }
+.window-bar { display:flex; gap:4px; margin-bottom:12px; }
+.window-bar i { width:6px;height:6px;border-radius:50%;background:#a59aff; }
+.window-line { height:7px;border-radius:9px;background:rgba(255,255,255,.18);margin:8px 0; }
+.window-line.short { width:48%;background:rgba(152,132,255,.7); }
+.window-boxes { display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px; }
+.window-boxes i { height:45px;border-radius:6px;background:rgba(133,119,232,.22);border:1px solid rgba(255,255,255,.08); }
+.project-content { padding:24px; }
+.tags { display:flex;gap:7px;flex-wrap:wrap;margin:15px 0; }
+.tag { border:1px solid #343b55;border-radius:99px;padding:6px 9px;color:#aab1c8;font-size:10px; }
+.project-content h3 { margin:0 0 8px;font-size:20px;letter-spacing:-.04em; }
+.project-content p { margin:0;color:#8f98b0;font-size:13px;line-height:1.7; }
+.project-link { display:inline-block;margin-top:18px;color:#b7aaff;font-size:12px;font-weight:800; }
+.timeline { border-left:1px solid #373b58;margin:20px 0 0 10px;padding-left:28px; }
+.timeline-item { position:relative;padding:0 0 30px; }
+.timeline-item:before { content:"";position:absolute;left:-34px;top:4px;width:10px;height:10px;border-radius:50%;background:#9a86ff;box-shadow:0 0 15px #9a86ff; }
+.timeline-item small { color:#9b8aff;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800; }
+.timeline-item h3 { margin:7px 0;font-size:17px; }
+.timeline-item p { margin:0;color:#929ab2;font-size:13px;line-height:1.7; }
+.contact { text-align:center; border:1px solid rgba(255,255,255,.1); border-radius:30px; padding:65px 25px; background:radial-gradient(ellipse at 50% 0%,rgba(118,87,246,.2),transparent 65%),#101629; }
+.contact h2 { max-width:700px;margin:14px auto 18px; }
+.contact p { color:#9da5bb;max-width:500px;margin:0 auto 28px;line-height:1.7;font-size:14px; }
+footer { padding:35px 0 45px;display:flex;justify-content:space-between;gap:20px;color:#788199;font-size:11px; }
+.socials { display:flex;gap:18px; }
+.socials a:hover { color:white; }
+.roadmap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.roadmap-card { position:relative; overflow:hidden; min-height:190px; }
+.roadmap-card:after { content:""; position:absolute; width:150px; height:150px; right:-65px; bottom:-75px; border-radius:50%; background:rgba(137,114,255,.16); filter:blur(8px); }
+.roadmap-number { color:#9d8cff; font-size:11px; font-weight:900; letter-spacing:.16em; }
+.roadmap-card h3 { margin:18px 0 9px; font-size:19px; }
+.roadmap-card p { color:#929ab2; font-size:13px; line-height:1.7; margin:0; }
+.toolkit { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+.tool-chip { padding:10px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04); color:#c9c5f5; font-size:12px; }
+.github-panel { display:flex; justify-content:space-between; align-items:center; gap:25px; }
+.github-panel h3 { margin:8px 0; font-size:24px; letter-spacing:-.04em; }
+.github-panel p { color:#929ab2; font-size:13px; line-height:1.7; margin:0; }
+.github-mark { width:62px; height:62px; flex:0 0 62px; display:grid; place-items:center; border-radius:20px; background:rgba(118,87,246,.18); color:#c5baff; font-size:25px; font-weight:900; }
+.utility-actions { position:fixed; right:22px; bottom:22px; z-index:30; display:flex; flex-direction:column; gap:9px; }
+.utility-btn { width:43px; height:43px; border-radius:50%; border:1px solid #44405f; background:rgba(20,25,44,.9); color:#eeeaff; cursor:pointer; box-shadow:0 8px 25px rgba(0,0,0,.25); transition:transform .2s,background .2s; }
+.utility-btn:hover { transform:translateY(-3px); background:#30275b; }
+body.light-mode { --site-background:#f3f4fb; --site-on-background:#17182a; color-scheme:light; }
+body.light-mode header { background:rgba(243,244,251,.82); border-color:rgba(20,25,45,.1); }
+body.light-mode nav, body.light-mode .hero-copy, body.light-mode .section-intro, body.light-mode .muted, body.light-mode .project-content p, body.light-mode .timeline-item p { color:#555d75; }
+body.light-mode .panel, body.light-mode .skill { background:linear-gradient(145deg,#fff,#edf0fb); border-color:rgba(30,35,65,.12); }
+body.light-mode .skill b, body.light-mode .project-content h3, body.light-mode .timeline-item h3 { color:#17182a; }
+body.light-mode .contact { background:radial-gradient(ellipse at 50% 0%,rgba(118,87,246,.16),transparent 65%),#fff; }
+body.light-mode .contact p { color:#555d75; }
+.reveal { opacity:0; transform:translateY(25px); transition:opacity .7s,transform .7s; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal.visible .skill, .reveal.visible .project, .reveal.visible .timeline-item { animation: riseIn .65s both; }
+.reveal.visible .skill:nth-child(2), .reveal.visible .project:nth-child(2), .reveal.visible .timeline-item:nth-child(2) { animation-delay:.12s; }
+.reveal.visible .skill:nth-child(3), .reveal.visible .project:nth-child(3), .reveal.visible .timeline-item:nth-child(3) { animation-delay:.24s; }
+.reveal.visible .skill:nth-child(4), .reveal.visible .project:nth-child(4) { animation-delay:.36s; }
+@keyframes riseIn { from { opacity:0; transform:translateY(28px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media(max-width:850px) {
+ .hero { grid-template-columns:1fr; padding-top:140px; text-align:center; }
+ .hero-copy { margin:auto; }
+ .hero-actions,.meta { justify-content:center; }
+ .scene { min-height:430px; }
+ .about-grid { grid-template-columns:1fr; }
+ .skills { grid-template-columns:repeat(2,1fr); }
+ .roadmap-grid { grid-template-columns:1fr; }
+}
+@media(max-width:600px) {
+ header { padding:15px 20px; }
+ nav { display:none; position:absolute;top:65px;left:15px;right:15px;flex-direction:column;align-items:stretch;padding:18px;background:#141a2d;border:1px solid #343b55;border-radius:18px;gap:18px; }
+ nav.open { display:flex; }
+ nav .nav-cta { text-align:center; }
+ .menu { display:block; }
+ main { padding:0 20px; }
+ h1 { font-size:58px; }
+ .scene { min-height:360px; }
+ .orbit { width:300px; }
+ .float-card { font-size:10px;padding:10px; }
+ .card-a { left:-2%; }.card-c{right:-4%;}
+ section { padding:75px 0; }
+ .section-top { display:block; }
+ .section-intro { margin-top:18px; }
+ .skills,.project-grid { grid-template-columns:1fr; }
+ .info-grid { grid-template-columns:1fr 1fr; }
+ footer { flex-direction:column; }
+}
+@media(max-width:850px), (pointer:coarse) { .custom-cursor { display:none; } }
+@media(prefers-reduced-motion:reduce) { *,*:before,*:after { animation:none!important;scroll-behavior:auto!important;transition:none!important; } .custom-cursor { display:none; } }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="ambient-orbs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="noise"></div><div class="glow"></div>
+<div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
+<header>
+  <a class="brand" href="#home">KAPIL<span>.</span></a>
+  <nav id="nav">
+    <a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#journey">Journey</a>
+    <a class="nav-cta" href="#contact">Let's talk ↗</a>
+  </nav>
+  <div style="display:flex;gap:9px;align-items:center"><button class="utility-btn" id="themeToggle" aria-label="Toggle light and dark theme" title="Toggle theme">☼</button><button class="menu" id="menu" aria-label="Open menu">☰</button></div>
+</header>
+<main>
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="eyebrow"><i class="pulse"></i> BCA Student · Building the future</div>
+    <h1>Hi, I'm<br><span class="gradient">Kapil Deka.</span></h1>
+    <p class="hero-copy">A curious creator exploring the world of web development, creative design and technology. I turn ideas into clean digital experiences — one project at a time.</p>
+    <div class="hero-actions"><a class="primary-btn" href="#projects">Explore my work ↗</a><a class="secondary-btn" href="#about">More about me</a></div>
+    <div class="meta"><div><strong>01+</strong>Years learning</div><div><strong>03</strong>Core interests</div><div><strong>∞</strong>Ideas to build</div></div>
+  </div>
+  <div class="scene" aria-label="Animated 3D letter K">
+    <div class="orbit"><div class="core"></div>
+      <div class="float-card card-a"><b>01 / CREATE</b>Design with purpose</div>
+      <div class="float-card card-b"><b>02 / DEVELOP</b>Build with curiosity</div>
+      <div class="float-card card-c"><b>03 / LEARN</b>Stay future-ready</div>
+    </div>
+  </div>
+</section>
+<section id="about" class="reveal">
+  <div class="section-top"><div><div class="kicker">01 — About me</div><h2>A little about<br>my world.</h2></div><p class="section-intro">I believe good technology starts with curiosity, consistency and the courage to experiment.</p></div>
+  <div class="about-grid">
+    <div class="panel"><p class="about-quote">“Learning today.<br><span>Creating tomorrow.</span>”</p><p class="muted">I'm Kapil Deka, a BCA student at NIELIT Dibrugarh. I'm building my foundation in computer applications while exploring web development, design and cybersecurity.</p></div>
+    <div class="panel"><div class="kicker">Quick profile</div><p class="muted">I enjoy learning by doing — experimenting with code, improving interfaces and turning small ideas into useful projects. My goal is to grow into a versatile developer who creates thoughtful digital products.</p>
+      <div class="info-grid"><div class="info"><small>Education</small><b>BCA · 1st Semester</b></div><div class="info"><small>Institute</small><b>NIELIT Dibrugarh</b></div><div class="info"><small>Based in</small><b>Assam, India</b></div><div class="info"><small>Current focus</small><b>Web & C Programming</b></div></div>
+    </div>
+  </div>
+</section>
+<section id="skills" class="reveal">
+  <div class="section-top"><div><div class="kicker">02 — My toolkit</div><h2>Curiosity meets<br>capability.</h2></div><p class="section-intro">A growing toolkit. These are the areas I'm learning, practising and improving every day.</p></div>
+  <div class="skills">
+    <div class="skill"><div class="symbol">⌘</div><b>Web Development</b><p>HTML, CSS, JavaScript and responsive layouts.</p></div>
+    <div class="skill"><div class="symbol">C</div><b>C Programming</b><p>Building logic with fundamentals, arrays and functions.</p></div>
+    <div class="skill"><div class="symbol">✳</div><b>UI / UX Design</b><p>Clean interfaces, visual hierarchy and user-first thinking.</p></div>
+    <div class="skill"><div class="symbol">⌁</div><b>Cybersecurity</b><p>Exploring security basics and safe digital practices.</p></div>
+  </div>
+</section>
+<section id="projects" class="reveal">
+  <div class="section-top"><div><div class="kicker">03 — Selected work</div><h2>Ideas into<br>experiences.</h2></div><p class="section-intro">A few concepts and builds from my learning journey. More experiments coming soon.</p></div>
+  <div class="project-grid">
+    <article class="panel project"><div class="project-art"><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-line short"></div><div class="window-line"></div><div class="window-line"></div><div class="window-boxes"><i></i><i></i><i></i></div></div></div><div class="project-content"><div class="kicker">01 / Student productivity</div><h3>StudyTrack</h3><p>A student-focused study dashboard concept for tasks, timetables, notes, attendance and progress tracking.</p><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Node.js</span></div><span class="project-link">In progress ↗</span></div></article>
+    <article class="panel project"><div class="project-art alt"><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-line short"></div><div class="window-boxes"><i></i><i></i><i></i></div><div class="window-line"></div><div class="window-line short"></div></div></div><div class="project-content"><div class="kicker">02 / Personal branding</div><h3>Personal Portfolio</h3><p>A creative space to introduce myself, showcase experiments and document my growth as a developer.</p><div class="tags"><span class="tag">Design</span><span class="tag">Frontend</span><span class="tag">3D UI</span></div><span class="project-link">You're viewing it ↗</span></div></article>
+    <article class="panel project"><div class="project-art third"><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-line short"></div><div class="window-line"></div><div class="window-boxes"><i></i><i></i><i></i></div></div></div><div class="project-content"><div class="kicker">03 / Learning project</div><h3>Web Experiments</h3><p>Small frontend experiments to practise layouts, animations, interaction and modern web design.</p><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Creative coding</span></div><span class="project-link">More soon ↗</span></div></article>
+    <article class="panel project"><div class="project-art"><div class="window"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-line short"></div><div class="window-line"></div><div class="window-line short"></div><div class="window-boxes"><i></i><i></i><i></i></div></div></div><div class="project-content"><div class="kicker">04 / Future direction</div><h3>Security Lab</h3><p>A planned learning space for documenting cybersecurity fundamentals, tools and ethical practice.</p><div class="tags"><span class="tag">Cybersecurity</span><span class="tag">Learning</span></div><span class="project-link">Coming soon ↗</span></div></article>
+  </div>
+</section>
+<section id="journey" class="reveal">
+  <div class="section-top"><div><div class="kicker">04 — The journey</div><h2>Always in<br>progress.</h2></div><p class="section-intro">Every step counts. This is the path I'm building through learning and practice.</p></div>
+  <div class="panel"><div class="timeline">
+    <div class="timeline-item"><small>Present · 2026</small><h3>BCA — First Semester</h3><p>Studying computer applications, programming fundamentals, mathematics and digital technology at NIELIT Dibrugarh.</p></div>
+    <div class="timeline-item"><small>Building now</small><h3>Frontend & Programming</h3><p>Practising C, HTML, CSS and JavaScript while building projects that solve everyday problems.</p></div>
+    <div class="timeline-item"><small>Next milestone</small><h3>Grow · Collaborate · Contribute</h3><p>Work towards internships, stronger projects, open-source contributions and deeper cybersecurity knowledge.</p></div>
+  </div></div>
+</section>
+<section id="roadmap" class="reveal">
+  <div class="section-top"><div><div class="kicker">05 — What's next</div><h2>My learning<br>roadmap.</h2></div><p class="section-intro">A practical path I'm following as I grow from fundamentals into building complete digital products.</p></div>
+  <div class="roadmap-grid">
+    <article class="panel roadmap-card"><span class="roadmap-number">PHASE 01</span><h3>Strong foundations</h3><p>Keep improving C programming, problem-solving, computer fundamentals and clean HTML/CSS layouts.</p></article>
+    <article class="panel roadmap-card"><span class="roadmap-number">PHASE 02</span><h3>Full-stack building</h3><p>Practise JavaScript, Node.js, databases and Git while making useful projects such as StudyTrack.</p></article>
+    <article class="panel roadmap-card"><span class="roadmap-number">PHASE 03</span><h3>Security mindset</h3><p>Learn networking, Linux and web security basics, always practising ethically in safe environments.</p></article>
+  </div>
+  <div class="panel" style="margin-top:16px"><div class="kicker">Tools I'm exploring</div><div class="toolkit"><span class="tool-chip">VS Code</span><span class="tool-chip">Git & GitHub</span><span class="tool-chip">JavaScript</span><span class="tool-chip">Node.js</span><span class="tool-chip">HTML & CSS</span><span class="tool-chip">C Language</span></div></div>
+</section>
+<section class="reveal" id="connect">
+  <div class="panel github-panel"><div><div class="kicker">Find me online</div><h3>Let's connect on GitHub.</h3><p>Follow my learning journey, explore my repositories and see what I'm building next.</p><div style="margin-top:20px"><a class="primary-btn" href="https://github.com/Kappu14" target="_blank" rel="noreferrer">Visit my GitHub ↗</a></div></div><div class="github-mark">GH</div></div>
+</section>
+<section id="contact" class="reveal">
+  <div class="contact"><div class="kicker">07 — Get in touch</div><h2>Have an idea?<br>Let's build something.</h2><p>I'm always happy to connect with fellow learners, developers and creative minds. Let's learn and create together.</p><a class="primary-btn" href="https://github.com/Kappu14" target="_blank" rel="noreferrer">Connect on GitHub ↗</a></div>
+</section>
+<footer><span>© 2026 Kapil Deka. Designed with curiosity.</span><div class="socials"><a href="https://github.com/Kappu14" target="_blank" rel="noreferrer">GitHub ↗</a><a href="#home">Back to top ↑</a></div></footer>
+</main>
+<div class="utility-actions"><button class="utility-btn" id="backToTop" aria-label="Back to top" title="Back to top">↑</button></div>
+</div>
+<script>
+const menu = document.getElementById('menu');
+const nav = document.getElementById('nav');
+menu.addEventListener('click', () => nav.classList.toggle('open'));
+nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => nav.classList.remove('open')));
+document.getElementById('themeToggle').addEventListener('click', () => document.body.classList.toggle('light-mode'));
+document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+const progress = document.getElementById('scrollProgress');
+const cursor = document.getElementById('customCursor');
+const finePointer = window.matchMedia('(pointer:fine)').matches;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (finePointer && !reduceMotion) {
+  window.addEventListener('pointermove', event => {
+    cursor.style.left = event.clientX + 'px';
+    cursor.style.top = event.clientY + 'px';
+    cursor.classList.add('active');
+  }, { passive:true });
+  document.querySelectorAll('a, button, .skill, .project').forEach(item => {
+    item.addEventListener('pointerenter', () => cursor.classList.add('hovering'));
+    item.addEventListener('pointerleave', () => cursor.classList.remove('hovering'));
+  });
+  document.addEventListener('pointerleave', () => cursor.classList.remove('active'));
+  document.querySelectorAll('.skill').forEach(card => {
+    card.addEventListener('pointermove', event => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - .5;
+      const y = (event.clientY - rect.top) / rect.height - .5;
+      card.style.transform = `perspective(700px) rotateX(${y * -12}deg) rotateY(${x * 14}deg) translateY(-5px)`;
+    });
+    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+  });
+}
+const updateProgress = () => {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+};
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+const orbit = document.querySelector('.orbit');
+const scene = document.querySelector('.scene');
+if (window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  scene.addEventListener('pointermove', event => {
+    const rect = scene.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - .5;
+    const y = (event.clientY - rect.top) / rect.height - .5;
+    orbit.style.setProperty('--tilt-x', (y * -13) + 'deg');
+    orbit.style.setProperty('--tilt-y', (x * 16) + 'deg');
+    orbit.style.transform = `translateY(-5px) rotateX(${y * -13}deg) rotateY(${x * 16}deg)`;
+  });
+  scene.addEventListener('pointerleave', () => { orbit.style.transform = ''; });
+}
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
